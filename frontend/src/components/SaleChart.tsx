@@ -12,11 +12,16 @@ import {
 } from "recharts";
 import { aggregateSalesByMonth, MonthlySale } from "../commons/lib";
 import {
+  Backdrop,
+  Box,
   CircularProgress,
+  IconButton,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { useState } from "react";
+import { FullscreenTwoTone } from "@mui/icons-material";
 
 interface CustomLineChartProps {
   chartData: MonthlySale[];
@@ -73,6 +78,15 @@ const SaleChart = () => {
   const theme = useTheme();
   const data = useAppSelector(getProducts);
   const isNonMobile = useMediaQuery("(min-width: 600px)");
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   if (!data) {
     return <CircularProgress />;
@@ -86,11 +100,17 @@ const SaleChart = () => {
     theme.palette.mode === "dark" ? "#1dbe5b" : "#d114a8";
 
   const width = isNonMobile ? 800 : 480;
-  const height = isNonMobile ? 800 : 400;
+  const height = isNonMobile ? 800 : 360;
   return (
     <>
       <Typography variant="h2" gutterBottom sx={{ textAlign: "center" }}>
         Monthly Sales
+        <IconButton
+          onClick={handleOpen}
+          sx={{ marginLeft: 1, transform: "scale(1.5)" }}
+        >
+          <FullscreenTwoTone />
+        </IconButton>
       </Typography>
       {isNonMobile ? (
         <ResponsiveContainer width="100%" height="60%">
@@ -111,6 +131,30 @@ const SaleChart = () => {
           height={height}
         />
       )}
+      <Backdrop
+        sx={{
+          color: "#fff",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backgroundColor:
+            theme.palette.mode === "dark"
+              ? "rgba(0, 0, 0, 0.9)"
+              : "rgba(255, 255, 255, 0.9)",
+        }}
+        open={open}
+        onClick={handleClose}
+      >
+        <div style={{ width: "80%", height: "60%" }}>
+          <ResponsiveContainer width="100%" height="60%">
+            <CustomLineChart
+              chartData={chartData}
+              strokeColorRetailSales={strokeColorRetailSales}
+              strokeColorWholesaleSales={strokeColorWholesaleSales}
+              width={width}
+              height={height}
+            />
+          </ResponsiveContainer>
+        </div>
+      </Backdrop>
     </>
   );
 };

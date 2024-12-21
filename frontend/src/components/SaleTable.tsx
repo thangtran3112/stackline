@@ -1,12 +1,60 @@
 import { getProducts } from "../api/products";
 import { useAppSelector } from "../stores/hooks";
-import { Box, Container, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { Sale } from "../stores/slices/productsSlice";
 import { useState } from "react";
 
+interface SearchableDataGridProps {
+  searchInput: string;
+  handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  sales: Sale[];
+  filteredSales: Sale[];
+  columns: GridColDef[];
+}
+
+const SearchableDataGrid: React.FC<SearchableDataGridProps> = ({
+  searchInput,
+  handleSearch,
+  sales,
+  filteredSales,
+  columns,
+}) => {
+  return (
+    <>
+      <TextField
+        label="Search by Week Ending"
+        variant="outlined"
+        value={searchInput}
+        onChange={handleSearch}
+        fullWidth
+        margin="normal"
+      />
+      <Box height="80vh" sx={{ overflow: "auto" }}>
+        <DataGrid
+          loading={!sales.length}
+          getRowId={(row: Sale) => row.weekEnding}
+          rows={filteredSales || []}
+          columns={columns}
+          pagination
+          paginationMode="client"
+          sortingMode="client"
+        />
+      </Box>
+    </>
+  );
+};
+
 const SaleTable = () => {
   const [searchInput, setSearchInput] = useState("");
+
   const products = useAppSelector(getProducts);
   const sales = products.length > 0 ? products[0].sales : [];
 
@@ -27,30 +75,20 @@ const SaleTable = () => {
   ];
 
   return (
-    <Container sx={{ marginTop: 4 }}>
-      <Typography variant="h2" gutterBottom sx={{ textAlign: "center" }}>
-        Table
-      </Typography>
-      <TextField
-        label="Search by Week Ending"
-        variant="outlined"
-        value={searchInput}
-        onChange={handleSearch}
-        fullWidth
-        margin="normal"
-      />
-      <Box height="80vh">
-        <DataGrid
-          loading={!sales}
-          getRowId={(row: Sale) => row.weekEnding}
-          rows={filteredSales || []}
+    <>
+      <Container sx={{ marginTop: 4 }}>
+        <Typography variant="h2" gutterBottom sx={{ textAlign: "center" }}>
+          Table
+        </Typography>
+        <SearchableDataGrid
+          searchInput={searchInput}
+          handleSearch={handleSearch}
+          sales={sales}
+          filteredSales={filteredSales}
           columns={columns}
-          pagination
-          paginationMode="client"
-          sortingMode="client"
         />
-      </Box>
-    </Container>
+      </Container>
+    </>
   );
 };
 
