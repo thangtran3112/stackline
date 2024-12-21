@@ -1,6 +1,6 @@
 import { getProducts } from "../api/products";
 import { useAppSelector } from "../stores/hooks";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Container, TextField, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Sale } from "../stores/slices/productsSlice";
 import { useState } from "react";
@@ -27,9 +27,9 @@ const SaleTable = () => {
   ];
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <Typography variant="h2" gutterBottom>
-        Sales Table
+    <Container>
+      <Typography variant="h2" gutterBottom sx={{ textAlign: "center" }}>
+        Table
       </Typography>
       <TextField
         label="Search by Week Ending"
@@ -45,13 +45,12 @@ const SaleTable = () => {
           getRowId={(row: Sale) => row.weekEnding}
           rows={filteredSales || []}
           columns={columns}
-          rowCount={(filteredSales && filteredSales.length) || 0}
           pagination
           paginationMode="client"
           sortingMode="client"
         />
       </Box>
-    </Box>
+    </Container>
   );
 };
 

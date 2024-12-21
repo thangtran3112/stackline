@@ -1,6 +1,6 @@
 import { Sale } from "../stores/slices/productsSlice";
 
-interface MonthlySale {
+export interface MonthlySale {
   month: string;
   retailSales: number;
   wholesaleSales: number;
