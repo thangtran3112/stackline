@@ -86,7 +86,7 @@ const SaleChart = () => {
     theme.palette.mode === "dark" ? "#1dbe5b" : "#d114a8";
 
   const width = isNonMobile ? 800 : 480;
-  const height = isNonMobile ? 600 : 300;
+  const height = isNonMobile ? 800 : 400;
   return (
     <>
       <Typography variant="h2" gutterBottom sx={{ textAlign: "center" }}>

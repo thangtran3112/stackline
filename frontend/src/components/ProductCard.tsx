@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: ProductDetails }) {
     >
       <Container>
         <CardMedia
-          sx={{ maxWidth: 400, height: 400 }}
+          sx={{ maxWidth: 400, height: 400, marginTop: 4 }}
           image={product.image}
           title="some product"
         />

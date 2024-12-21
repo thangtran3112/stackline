@@ -27,7 +27,7 @@ const SaleTable = () => {
   ];
 
   return (
-    <Container>
+    <Container sx={{ marginTop: 4 }}>
       <Typography variant="h2" gutterBottom sx={{ textAlign: "center" }}>
         Table
       </Typography>
